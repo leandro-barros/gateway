@@ -6,15 +6,18 @@ spring:
     name: gateway
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
       routes:
-        - id: notificationModule
-          uri: http://localhost:8081/
+        - id: notification-service
+          uri: lb://notification
           predicates:
             - Path=/email/**
-        - id: fintionModule
-          uri: http://localhost:8087/
+        - id: financas-service
+          uri: lb://financas
           predicates:
-            - Path=/empresas/**
+            - Path=/oauth/token**, /empresas/**
 
 eureka:
   client:
@@ -22,3 +25,5 @@ eureka:
     fetch-registry: true
     service-url:
       defautZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
